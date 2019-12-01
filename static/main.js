@@ -17,9 +17,57 @@ function getDataApi() {
       });
 }
 
-function Btn(props) {
+function TagRow({ tag_name, raw_tag }) {
 
+  const [ isSourceShow, setSourceShow ] = React.useState(false);
+  return (
+    <div className='tag-row-wrapper'>
+      <div className='tag-row'>
+          <b className='tag-name'>{ tag_name } :</b>
+          <div className='tag-value' dangerouslySetInnerHTML={{__html: raw_tag}}/>
+          <button className='tag-detail-btn' onClick={() => setSourceShow(!isSourceShow)}>Details</button>
+          
+      </div>
+      <code className={`tag-source ${isSourceShow ? 'show' : ''}`}>{raw_tag}</code>
+    </div>
+  )
+}
+
+function Btn(props) {
     return (<button onClick={props.onClick}>get data</button>)
+}
+
+function Field({ id, onChange, value }) {
+  return (<input className="form-field" type='text' value={value} id={id} onChange={onChange} />)
+}
+
+let fieldsCounter = 0;
+
+function FormBulder() {
+  const [ fields, setFieldsList ] = React.useState({ [ fieldsCounter ] : '' });
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    console.log('submit', fields);
+  }
+
+  const generateOnChange = fieldId => (e) => {
+    setFieldsList({ ...fields, [fieldId]: e.target.value });
+  }
+
+  return (
+    <div>
+      <form className='form' type='multipart/form-data' method='post' onSubmit={handleSubmit}>
+        { Object.keys(fields).map(fieldId => <Field id={fieldId}
+                                                    value={fields[ fieldId ]}
+                                                    onChange={generateOnChange(fieldId)} />) }
+      <button type='submit'>Check pages</button>
+      </form>
+      <button onClick={() => {
+        setFieldsList({ ...fields, [ ++fieldsCounter ]: '' })
+      }}>Add field</button>
+    </div>
+  );
 }
 
 function App() {
@@ -31,8 +79,6 @@ function App() {
             .catch(() => alert("Panic. Please, restart the app or contact the author."))
     }
 
-    console.log("parsedData => ", parsedData)
-
     function getContent() {
         if (!parsedData) return null;
 
@@ -43,7 +89,7 @@ function App() {
                             <b className='source-title'>{url}</b>
                             <br />
                             <br />
-                            { parsedData[url].map(tag => <div className='tag-box'><code>{tag}</code><div className='tag-value' dangerouslySetInnerHTML={{__html: tag}}/></div>) }
+                            { parsedData[url].map(tagData => <TagRow {...tagData} />) }
                         </div>
                     )
                 })
@@ -51,7 +97,9 @@ function App() {
 
     return (
         <main>
-            <h1>Hello React </h1>
+            <h1>SEO Reporter</h1>
+            <h3>Please, insert the URL of the page that you want to check</h3>
+            <FormBulder />
             <Btn onClick={getParsedData} />
             { getContent() }
         </main>

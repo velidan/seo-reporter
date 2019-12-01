@@ -9,14 +9,16 @@ from scrapy.crawler import CrawlerProcess
 from flask import Flask, render_template
 app = Flask(__name__)
 
-
-
 source_dict = {}
 
-def getTagName(str):
+"""
+accepts a html tag string and returns a dict
+where keys: tag_name - a tag name, raw_tag - a raw tag value
+"""
+def getTagData(str):
     match_res = re.search('^[<](.+?)[>\s]', str)
     if match_res is not None:
-        return match_res.group(1)
+        return { "tag_name": match_res.group(1), "raw_tag": str }
     else:
         return str
 
@@ -24,7 +26,8 @@ class PageSpider(scrapy.Spider):
     name = 'pageSpider'
 
     custom_settings = {
-        'LOG_LEVEL': 'DEBUG'
+        'LOG_LEVEL': 'INFO'
+        # 'LOG_LEVEL': 'DEBUG'
     }
 
     # def __init__(self, urlList):
@@ -44,10 +47,14 @@ class PageSpider(scrapy.Spider):
         page = response.url.split('/')[-2]
         filename = 'quotes-%s.html' % page
         res = response.css('h1, h2, h3, h4, h5, h6').getall()
-        source_dict[response.url] = res
-        print(res)
-        print('source_dict -> %s' % source_dict)
-        #cleaned_res = map(getTagName, res)
+        
+        # print(res)
+        #print('source_dict -> %s' % source_dict)
+        tag_data_list = list(map(getTagData, res))
+
+        source_dict[response.url] = tag_data_list
+        # print('source_dict -> %s' % source_dict)
+
         #print('--- start result ---')
         #print('\n'.join(list(cleaned_res)))
         #print('--- end result ---')
