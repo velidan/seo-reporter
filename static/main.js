@@ -73,7 +73,7 @@ function Field({ id, onChange, value }) {
           id={id} 
           placeholder='Enter URL to explore' 
           onChange={onChange} />
-          <button className='form-row-delete-btn form-btn' onClick={() => { alert('delete row') }}>Delete</button>
+          <button className='form-row-delete-btn' onClick={() => { alert('delete row') }}>Delete</button>
     </label>
   )
 }
