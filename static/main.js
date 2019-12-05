@@ -17,6 +17,33 @@ function getDataApi() {
       });
 }
 
+function explorePagesSeo(payload) {
+  const body = JSON.stringify(
+    { urls : payload }
+  )
+  console.log(body)
+  return fetch('/explore-pages-seo', {
+    method: 'POST',
+    body: body
+  })
+      .then(
+        function(response) {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+              response.status);
+            return;
+          }
+
+          // Examine the text in the response
+          return response.json();
+        }
+      )
+      .catch(function(err) {
+        console.log('Explore Error :-S', err);
+      });
+  
+}
+
 function TagRow({ tag_name, raw_tag }) {
 
   const [ isSourceShow, setSourceShow ] = React.useState(false);
@@ -38,17 +65,32 @@ function Btn(props) {
 }
 
 function Field({ id, onChange, value }) {
-  return (<input className="form-field" type='text' value={value} id={id} onChange={onChange} />)
+  return (
+    <label className='form-row-wrapper'>
+      <input className="form-field" 
+          type='text' 
+          value={value} 
+          id={id} 
+          placeholder='Enter URL to explore' 
+          onChange={onChange} />
+          <button className='form-row-delete-btn form-btn' onClick={() => { alert('delete row') }}>Delete</button>
+    </label>
+  )
 }
 
 let fieldsCounter = 0;
 
-function FormBulder() {
+function FormBulder(props) {
   const [ fields, setFieldsList ] = React.useState({ [ fieldsCounter ] : '' });
 
   function handleSubmit(e) {
     e.preventDefault()
     console.log('submit', fields);
+    explorePagesSeo(fields)
+      .then((res) => {
+        console.log('res =>> ', res)
+        props.onFetchedData(res)
+      })
   }
 
   const generateOnChange = fieldId => (e) => {
@@ -56,16 +98,18 @@ function FormBulder() {
   }
 
   return (
-    <div>
+    <div className='form-wrapper'>
+      <button className='form-add-field-btn form-btn' onClick={() => {
+        setFieldsList({ ...fields, [ ++fieldsCounter ]: '' })
+      }}>Add Url field</button>
       <form className='form' type='multipart/form-data' method='post' onSubmit={handleSubmit}>
         { Object.keys(fields).map(fieldId => <Field id={fieldId}
                                                     value={fields[ fieldId ]}
                                                     onChange={generateOnChange(fieldId)} />) }
-      <button type='submit'>Check pages</button>
+
+      <button className='form-submit-btn' type='submit'>Check pages</button>
       </form>
-      <button onClick={() => {
-        setFieldsList({ ...fields, [ ++fieldsCounter ]: '' })
-      }}>Add field</button>
+
     </div>
   );
 }
@@ -99,13 +143,11 @@ function App() {
         <main>
             <h1>SEO Reporter</h1>
             <h3>Please, insert the URL of the page that you want to check</h3>
-            <FormBulder />
-            <Btn onClick={getParsedData} />
+            <FormBulder onFetchedData={data => setParsedData(data)} />
+            {/* <Btn onClick={getParsedData} /> */}
             { getContent() }
         </main>
     )
 }
-console.log("document.getElementById('root')", document.getElementById('root'));
-console.log("ReactDom", ReactDOM)
-console.log("App", App)
+
 ReactDOM.render(<App />, document.getElementById('root'));

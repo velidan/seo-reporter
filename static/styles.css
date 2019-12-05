@@ -2,13 +2,39 @@ main {
     padding: 24px;
 }
 
+.form-row-wrapper {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+
 .form-field {
-    display: block
+    display: block;
+    flex-grow: 1;
+    margin-right: 16px;
+    padding: 6px;
+}
+
+.form-row-delete-btn {
+    min-width: 100px;
+    flex-shrink: 0;
+}
+
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
 }
 
 .form {
     display: flex;
     flex-direction: column;
+    margin: 20px 0 40px;
+}
+
+.form-add-field-btn {
+    margin-top: 6px;
+    align-self: flex-end;
+    min-width: 200px;
 }
 
 .tag-source {
