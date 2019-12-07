@@ -1,10 +1,68 @@
-main {
-    padding: 24px;
+:root {
+    --primary-color: #29b6f6;
+    --primary-color-light: #73e8ff;
+    --primary-color-dark: #0086c3;
+
+    --secondary-color: #757575;
+    --secondary-color-light: #a4a4a4;
+    --secondary-color-dark: #494949;
+
+    --bg-color: #f1f1f1;
+    --success-color: #66bb6a;
+    --success-color-light: #98ee99;
+
+
+    --typography-color-primary: #000000;
+    --typography-color-secondary: #ffffff;
+  }
+
+body {
+    background-color: var(--bth-color);
+    font-family: 'Roboto Mono';
+}
+
+
+.header {
+    margin-bottom: 64px;
+    background-color: var(--primary-color);
+    padding: 58px 24px 14px;
+}
+
+.action {
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.action:focus {
+    outline: none;
+}
+
+.header * {
+    color: var(--typography-color-primary)
+}
+
+.header:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 34px;
+    background-color: var(--primary-color-dark);
+
+}
+
+.title-primary {
+}
+
+.header p {
+    font-size: 18px;
 }
 
 .form-row-wrapper {
     display: flex;
-    margin-bottom: 16px;
+    margin-bottom: 36px;
+    border-radius: 10px;
 }
 
 
@@ -12,29 +70,111 @@ main {
     display: block;
     flex-grow: 1;
     margin-right: 16px;
+    border: none;
+    border-radius: 1px;
+    outline: none;
     padding: 6px;
+    border-bottom: 1px solid var(--secondary-color)
+}
+
+.form-field:focus {
+    outline: none;
 }
 
 .form-row-delete-btn {
-    min-width: 100px;
     flex-shrink: 0;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.form-row-delete-btn:hover .svg-icon {
+    color: var(--secondary-color-light)
+}
+
+.form-row-delete-btn .svg-icon {
+    transition: all .3s ease-in-out;
+    width: 34px;
+    height: 34px;
+    color: var(--secondary-color-dark);
+    transform: translate(0px, 6px);
 }
 
 .form-wrapper {
     display: flex;
     flex-direction: column;
+    max-width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.5);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.form-wrapper-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-wrapper-header h5 {
+    margin: 0;
 }
 
 .form {
     display: flex;
     flex-direction: column;
-    margin: 20px 0 40px;
+    margin: 20px 0 20px;
 }
 
 .form-add-field-btn {
     margin-top: 6px;
     align-self: flex-end;
-    min-width: 200px;
+    border-radius: 10px;
+    min-height: 40px;
+    min-width: 60px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--primary-color);
+    outline: none;
+}
+
+.form-add-field-btn:hover {
+    background-color: var(--primary-color-light)
+}
+
+.form-add-field-btn .svg-icon {
+    display: block;
+    width: 34px;
+    height: 34px;
+}
+
+.form-add-field-btn .svg-icon path {
+    fill: var(--typography-color-secondary);
+}
+
+.form-submit-btn {
+    color: var(--typography-color-secondary);
+    font-size: 18px;
+    height: 40px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 0 auto;
+    background-color: var(--primary-color);
+}
+
+.form-submit-btn[disabled] {
+    cursor: none;
+    background-color: var(--secondary-color);
+}
+
+.form-submit-btn:focus {
+    outline: none;
+}
+
+.form-submit-btn:not([disabled]):hover {
+    background-color: var(--primary-color-light)
 }
 
 .tag-source {
