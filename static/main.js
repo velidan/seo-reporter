@@ -1,27 +1,7 @@
-function getDataApi() {
-    return fetch('/get-parsed-data')
-      .then(
-        function(response) {
-          if (response.status !== 200) {
-            console.log('Looks like there was a problem. Status Code: ' +
-              response.status);
-            return;
-          }
-
-          // Examine the text in the response
-          return response.json();
-        }
-      )
-      .catch(function(err) {
-        console.log('Fetch Error :-S', err);
-      });
-}
-
 function explorePagesSeo(payload) {
   const body = JSON.stringify(
     { urls : payload }
   )
-  console.log(body)
   return fetch('/explore-pages-seo', {
     method: 'POST',
     body: body
@@ -44,6 +24,10 @@ function explorePagesSeo(payload) {
   
 }
 
+function Loader() {
+  return (<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>);
+}
+
 function TagRow({ tag_name, raw_tag }) {
 
   const [ isSourceShow, setSourceShow ] = React.useState(false);
@@ -52,7 +36,7 @@ function TagRow({ tag_name, raw_tag }) {
       <div className='tag-row'>
           <b className='tag-name'>{ tag_name } :</b>
           <div className='tag-value' dangerouslySetInnerHTML={{__html: raw_tag}}/>
-          <button className='tag-detail-btn' onClick={() => setSourceShow(!isSourceShow)}>Details</button>
+          <button className='standard-btn action' onClick={() => setSourceShow(!isSourceShow)}>Details</button>
           
       </div>
       <code className={`tag-source ${isSourceShow ? 'show' : ''}`}>{raw_tag}</code>
@@ -90,14 +74,15 @@ let fieldsCounter = 0;
 
 function FormBulder(props) {
   const [ fields, setFieldsList ] = React.useState({ [ fieldsCounter ] : '' });
+  const [ pending, setPending ] = React.useState(false);
 
   function handleSubmit(e) {
     e.preventDefault()
-    console.log('submit', fields);
+    setPending(true);
     explorePagesSeo(fields)
       .then((res) => {
-        console.log('res =>> ', res)
         props.onFetchedData(res)
+        setPending(false);
       })
   }
 
@@ -105,8 +90,11 @@ function FormBulder(props) {
     setFieldsList({ ...fields, [fieldId]: e.target.value });
   }
 
-    console.log('fields', fields)
   const isDisabledSubmitBtn = Object.values(fields).every(o => !o);
+
+  const exploreBtnContent = pending
+   ? <Loader />
+   : 'Explore';
 
   return (
     <section className='form-wrapper'>
@@ -127,35 +115,39 @@ function FormBulder(props) {
                                                     value={fields[ fieldId ]}
                                                     onChange={generateOnChange(fieldId)} />) }
 
-      <button className='form-submit-btn action' disabled={isDisabledSubmitBtn} type='submit'>Explore</button>
+      <button className='form-submit-btn action' disabled={isDisabledSubmitBtn} type='submit'>
+        { exploreBtnContent }
+      </button>
       </form>
 
     </section>
   );
 }
 
+function Content({ url, data }) {
+
+  const [ show, setShow ] = React.useState(false);
+
+  return (
+      <div className={`content-wrapper ${show ? 'show' : ''}`}>
+          <b className='source-title'>
+            {url}
+            <span className='standard-btn action' onClick={ () => setShow(!show) }>Toggle Report</span>
+          </b>
+          { data[url].map(tagData => <TagRow {...tagData} />) }
+      </div>
+  );
+}
+
 function App() {
     const [ parsedData, setParsedData ] = React.useState({});
-
-    function getParsedData() {
-        getDataApi()
-            .then(data => setParsedData(data))
-            .catch(() => alert("Panic. Please, restart the app or contact the author."))
-    }
 
     function getContent() {
         if (!parsedData) return null;
 
         return Object.keys(parsedData)
                 .map(url => {
-                    return (
-                        <div>
-                            <b className='source-title'>{url}</b>
-                            <br />
-                            <br />
-                            { parsedData[url].map(tagData => <TagRow {...tagData} />) }
-                        </div>
-                    )
+                    return ( <Content url={url} data={parsedData} />)
                 })
     }
 
@@ -168,7 +160,7 @@ function App() {
             
             <FormBulder onFetchedData={data => setParsedData(data)} />
             {/* <Btn onClick={getParsedData} /> */}
-            { getContent() }
+            <div className='box'>{ getContent() }</div>
         </main>
     )
 }
