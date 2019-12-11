@@ -11,7 +11,15 @@ import spiders
 import json
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+import os, sys
+
+base_dir = '.'
+if hasattr(sys, '_MEIPASS'):
+    base_dir = os.path.join(sys._MEIPASS)
+
+app = Flask(__name__,
+        static_folder=os.path.join(base_dir, 'static'),
+        template_folder=os.path.join(base_dir, 'templates'))
 output_data = []
 crawl_runner = CrawlerRunner()
 # crawl_runner = CrawlerRunner(get_project_settings()) if you want to apply settings.py
@@ -39,8 +47,6 @@ def explore_pages_seo():
     # just a fill the shared variable by result 
     scrape_with_crochet(urls)
 
-    print('source_dict, {0}'.format(source_dict))
-
     return source_dict
     # return jsonify(output_data[0])
 
@@ -66,7 +72,6 @@ def _crawler_result(item, response, spider):
 
 
     # item_value = item[ item_key ]
-    print("item => {0}".format(item_keys))
     output_data.append(dict(item))
 
 
