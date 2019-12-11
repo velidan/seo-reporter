@@ -1,3 +1,4 @@
+/* vars */
 :root {
     --primary-color: #29b6f6;
     --primary-color-light: #73e8ff;
@@ -16,11 +17,7 @@
     --typography-color-secondary: #ffffff;
   }
 
-body {
-    background-color: var(--bth-color);
-    font-family: 'Roboto Mono';
-}
-
+/* loader */
 .lds-ellipsis {
     display: inline-block;
     position: relative;
@@ -78,6 +75,12 @@ body {
   }
 
 
+/* system */
+body {
+    background-color: var(--bth-color);
+    font-family: 'Roboto Mono';
+}
+
 .header {
     margin-bottom: 64px;
     background-color: var(--primary-color);
@@ -95,6 +98,24 @@ body {
 .action:focus {
     outline: none;
 }
+
+.standard-btn {
+    font-size: 16px;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    min-height: 40px;
+    border-radius: 10px;
+    color: var(--typography-color-secondary);
+    background-color: var(--primary-color);
+}
+
+.standard-btn:hover {
+    background-color: var(--primary-color-light)
+}
+
+/* header */
 
 .header .title-primary,
 .header p {
@@ -117,6 +138,8 @@ body {
     min-height: 70px;
     color: var(--typography-color-primary)
 }
+
+/* form */
 
 .form-row-wrapper {
     display: flex;
@@ -236,6 +259,7 @@ body {
     background-color: var(--primary-color-light)
 }
 
+/* content  */
 .content-wrapper {
     margin-bottom: 24px;
 }
@@ -244,21 +268,19 @@ body {
     display: flex;
 }
 
-.standard-btn {
-    font-size: 16px;
-    border: 1px solid;
+.source-title {
     display: flex;
-    align-items: center;
-    padding: 0 20px;
-    min-height: 40px;
+    justify-content: space-between;
+    font-size: 20px;
+    box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.5);
+    padding: 10px;
     border-radius: 10px;
-    color: var(--typography-color-secondary);
-    background-color: var(--primary-color);
+    overflow: hidden;
+    align-items: center;
+    margin: 40px 0 30px 0;
 }
 
-.standard-btn:hover {
-    background-color: var(--primary-color-light)
-}
+/* tags */
 
 .tag-source {
     display: none;
@@ -270,7 +292,6 @@ body {
     font-size:13px;
     font-stretch:100%;
     font-weight:400;
-    line-height:16.9px;
     padding: 8px;
     margin: 12px 0;
     border-radius: 10px;
@@ -327,16 +348,4 @@ body {
 .tag-detail-btn {
     align-self: center;
     margin-left: 20px;
-}
-
-.source-title {
-    display: flex;
-    justify-content: space-between;
-    font-size: 20px;
-    box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.5);
-    padding: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    align-items: center;
-    margin: 40px 0 30px 0;
 }

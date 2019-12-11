@@ -1,3 +1,7 @@
+// a field ID autoincremental
+let fieldsCounter = 0;
+
+// a main request script
 function explorePagesSeo(payload) {
   const body = JSON.stringify(
     { urls : payload }
@@ -69,8 +73,6 @@ function Field({ id, onChange, value }) {
     </label>
   )
 }
-
-let fieldsCounter = 0;
 
 function FormBulder(props) {
   const [ fields, setFieldsList ] = React.useState({ [ fieldsCounter ] : '' });
