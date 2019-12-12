@@ -7,9 +7,7 @@ A web-app that examines websites and creates a report regarding their SEO optimi
 
 Run seo-reporter.exe that placed in ./dist/dist.zip (allow to run untrusted app if necessary. You'll see a popup) You should see in an opened terminal the msg about runned server if everything ok go to http://127.0.0.1:5000 in your browser (UI tested in Chrome only) and you can see the app insert an URL to investigate (add another if necessary)
 
- - click Explore button
-
-_you will see a result of the explored data_
+ - click Explore button    _you will see a result of the explored data_
 
  - click on Detail button to expand SEO structure You will see SEO structure of the explored website
 
