@@ -64,6 +64,8 @@ def scrape_with_crochet(urls):
 
 
 def _crawler_result(item, response, spider):
+    # make sure that the dict isn't filled by prev request
+    source_dict.clear()
     """
     We're using dict() to decode the items.
     Ideally this should be done using a proper export pipeline.

@@ -8,6 +8,7 @@ class SeoSpider(scrapy.Spider):
     name = 'seo_spider'
 
     def __init__(self, urls):
+        result.clear()
         self.start_urls = urls
 
     def parse(self, response):

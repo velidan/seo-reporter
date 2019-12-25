@@ -89,7 +89,7 @@ function FormBulder(props) {
               className="targets-textarea"
               rows="6" cols="45" name="targets"
               value={val}
-              onChange={e => { console.log("e", e); setVal(e.target.value) }} />
+              onChange={e => { setVal(e.target.value) }} />
             </label>
 
           <button className='form-submit-btn action' disabled={!val} type='submit'>
@@ -136,7 +136,6 @@ function App() {
           </header>
             
             <FormBulder onFetchedData={data => setParsedData(data)} />
-            {/* <Btn onClick={getParsedData} /> */}
             <div className='box'>{ getContent() }</div>
         </main>
     )
