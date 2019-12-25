@@ -57,7 +57,6 @@ function FormBulder(props) {
   const [ pending, setPending ] = React.useState(false);
 
   function handleSubmit(e) {
-    console.log("e =>> ", e)
     e.preventDefault()
     setPending(true);
     explorePagesSeo(val)
@@ -65,6 +64,12 @@ function FormBulder(props) {
         props.onFetchedData(res)
         setPending(false);
       })
+  }
+
+  const handleOnDelete = fieldId => {
+    let res = { ...fields};
+    delete res[ fieldId ];
+    setFieldsList(res);
   }
 
   const exploreBtnContent = pending
@@ -79,17 +84,17 @@ function FormBulder(props) {
 
       <form className='form' type='multipart/form-data' method='post' onSubmit={handleSubmit}>
         
-      <label className='form-row-wrapper'>
-        <textarea 
-          className="targets-textarea"
-          rows="10" cols="45" name="targets"
-          value={val}
-          onChange={e => { console.log("e", e); setVal(e.target.value) }} />
-        </label>
-        
-      <button className='form-submit-btn action' disabled={!val} type='submit'>
-        { exploreBtnContent }
-      </button>
+          <label className='form-row-wrapper'>
+            <textarea
+              className="targets-textarea"
+              rows="6" cols="45" name="targets"
+              value={val}
+              onChange={e => { console.log("e", e); setVal(e.target.value) }} />
+            </label>
+
+          <button className='form-submit-btn action' disabled={!val} type='submit'>
+            { exploreBtnContent }
+          </button>
       </form>
 
     </section>

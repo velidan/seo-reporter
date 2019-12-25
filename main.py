@@ -8,10 +8,17 @@ from scrapy.signalmanager import dispatcher
 import json
 from flask import Flask, render_template, request
 
+import os, sys
 from spider import SeoSpider
 import re
 
-app = Flask(__name__)
+base_dir = '.'
+if hasattr(sys, '_MEIPASS'):
+    base_dir = os.path.join(sys._MEIPASS)
+
+app = Flask(__name__,
+        static_folder=os.path.join(base_dir, 'static'),
+        template_folder=os.path.join(base_dir, 'templates'))
 crawl_runner = CrawlerRunner()
 
 # a parsing result obj that will be send to the client
