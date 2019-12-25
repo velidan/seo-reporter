@@ -147,6 +147,10 @@ body {
     border-radius: 10px;
 }
 
+.targets-textarea {
+    flex-grow: 1
+}
+
 
 .form-field {
     display: block;

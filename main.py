@@ -9,6 +9,7 @@ import json
 from flask import Flask, render_template, request
 
 from spider import SeoSpider
+import re
 
 app = Flask(__name__)
 crawl_runner = CrawlerRunner()
@@ -30,7 +31,13 @@ def get_parsed_data():
 def explore_pages_seo():
     # run crawler in twisted reactor synchronously
     payload = json.loads(request.data)
-    urls = list(payload['urls'].values())
+    urls_str = payload['urls']
+
+    # could contain spaces etc.
+    dirty_url_list = re.findall("(?:http[s]:\/\/)(?:(?!http[s]?:\/\/).)*", urls_str)
+    urls = [ x.rstrip() for x in dirty_url_list ]
+
+    
 
     # a crutch. As it's a subprocess call 
     # it doesn't return anything but it's
